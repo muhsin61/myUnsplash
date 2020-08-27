@@ -9,6 +9,7 @@ export default new Vuex.Store({
     datas: [],
     newDatas: [[],[],[]],
     number: 0 ,
+    isShow: "block"
   },
   mutations: {
     add: (state) => {
@@ -23,6 +24,9 @@ export default new Vuex.Store({
       console.log("state.newDatas")
       console.log(state.newDatas)
 
+    },
+    displayChange: (state) => {
+      alert(state.isShow)
     }
   },
   actions: {

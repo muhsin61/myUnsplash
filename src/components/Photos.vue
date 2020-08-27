@@ -82,7 +82,7 @@ button {
   opacity: 0;
 }
 button:hover{
-  color: #cc4b4b;
+  opacity: 1;
   border: 1px solid #cc4b4b;
 }
 p {
