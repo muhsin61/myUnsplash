@@ -1,18 +1,26 @@
 <template>
   <div class="hello">
-    <h1 @click="deneme">{{ msg }} msg</h1>
-    <p @click="deneme">{{ $store.state.deneme }}</p>
-    <div class="gallery" >
-      <div
-        class="gallery-item"
-        v-for="item in $store.state.datas"
-        :key="item.text"
-      >
-        <div class="content">
+    <div class="row">
+      <div class="column">
+        <div v-for="item in $store.state.newDatas[0]" :key="item.text" class="imgs">
           <img :src="item.link" :alt="item.text" />
-          </div>
-          <button>Delete</button>
-          <p class="p">{{item.text}}</p>
+          <button @click="deletes(item.text)">Delete</button>
+          <p class="p">{{ item.text }}</p>
+        </div>
+      </div>
+      <div class="column">
+        <div v-for="item in $store.state.newDatas[1]" :key="item.text" class="imgs">
+          <img :src="item.link" :alt="item.text" />
+          <button @click="deletes(item.text)">Delete</button>
+          <p class="p">{{ item.text }}</p>
+        </div>
+      </div>
+      <div class="column">
+        <div v-for="item in $store.state.newDatas[2]" :key="item.text" class="imgs">
+          <img :src="item.link" :alt="item.text" />
+          <button @click="deletes(item.text)">Delete</button>
+          <p class="p">{{ item.text }}</p>
+        </div>
       </div>
     </div>
   </div>
@@ -21,75 +29,82 @@
 <script>
 export default {
   name: "Photos",
-  props: {
-    msg: String,
+  methods: {
+    deletes: () => {
+      alert("hover me");
+    },
   },
-    methods: {
-    deneme: () => {
-      alert("hover me")
-    }
-    }
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.galery{
-  
-  display: grid;
-  grid-template-columns: auto auto auto;
-  background-color: #2196F3;
-  padding: 10px;
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 4px;
+  justify-content: center;
 }
-.galery-item{
-position: relative;
-width: 32%;
+.column {
+  flex: 30%;
+  max-width: 30%;
+  padding: 0 4px;
 }
-.content{
-width: 30%;
-
+.column img {
+  margin-top: 8px;
+  vertical-align: middle;
+  width: 100%;
+  border-radius: 24px;
 }
-button{
-  border: 1px solid #EB5757;
+.imgs{
+  position: relative;
+}
+button {
+  border: 1px solid #eb5757;
   box-sizing: border-box;
   border-radius: 12px;
+  background: none;
+  width: 63px;
+  height: 23px;
   font-family: Montserrat;
   font-style: normal;
   font-weight: 600;
   font-size: 12px;
   line-height: 15px;
   text-transform: lowercase;
-  color: #EB5757;
-  background: none;
-
+  color: #eb5757;
   z-index: 3;
-  display: none;
-  position: relative;
-  top: 0px;
+  position: absolute;
   cursor: pointer;
-  transition: 0.5s;
+  position: absolute;
+  top: 20px;
+  right: 16px;
+  font-size: 18px;
+  opacity: 0;
 }
-.p{
+button:hover{
+  color: #cc4b4b;
+  border: 1px solid #cc4b4b;
+}
+p {
   font-family: Montserrat;
   font-style: normal;
   font-weight: 500;
   font-size: 18px;
   line-height: 22px;
-  color: #FFFFFF;
-  display: none;
+  color: #ffffff;
   position: relative;
-  margin-top: -50px;
+  margin-top: -40px;
   padding-left: 20px;
-  transition: 0.5s;
+  z-index: 3;
+  opacity: 0;
 }
-.content:hover ~ .p{
-  display: block!important;
+img:hover{
+  filter: grayscale(100%);
 }
-.content:hover ~  button{
-  display: block!important;
+img:hover ~ button {
+  opacity: 1;
 }
-img{
-  width: 100%;
-  border-radius: 24px;
+img:hover ~ p {
+  opacity: 1;
 }
 </style>
