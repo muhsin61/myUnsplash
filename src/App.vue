@@ -2,7 +2,7 @@
   <div id="app">
     <div class="header">
       <div class="icons">
-        <img alt="Vue logo" src="./my_unsplash_logo.svg" />
+        <img alt="unsplah logo" src="./my_unsplash_logo.svg" @click="fire" />
       </div>
       <div class="forms">
         <span class="material-icons">search</span>
@@ -10,19 +10,13 @@
       </div>
       <div class="add"><button>Add a photo</button></div>
     </div>
-    <div class="login">
-      <div class="loginText">
-        <h1 @click="fire">deneem</h1>
-        <p>deneem</p>
-      </div>
-    </div>
 
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <Photos msg="Welcome to Your Vue.js App" />
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import Photos from "./components/Photos.vue";
 
 import * as firebase from "firebase/app";
 
@@ -48,61 +42,78 @@ firebase.analytics();
 export default {
   name: "App",
   components: {
-    HelloWorld,
+    Photos,
   },
   //devchallenges.io
   //muhsin.io@horsemail.com
-  methods: {
-    fire: async () => {
-      alert("tıklandı");
+  created() {
+    firebase.database().ref().on("value", (snapshot) => {
+        console.log("val değeri :");
+        let datas = snapshot.val();
+        let photos = JSON.parse(datas["users"]["links"]);
+        this.$store.state.datas = photos;
+        photos.forEach((item) => {
+          console.log(item);
+        });
+      },
 
-      await firebase
+    );
+  },
+  methods: {
+    fire: () => {
+      //alert(this.$store.state.deneme);
+
+      /*firebase
         .auth()
         .signInWithEmailAndPassword(
           "muhsin.io@horsemail.com",
           "devChallenges.io"
         )
-        .then((data) => {
-          console.log(data);
-        })
-        .catch((error) => {
-          // Handle Errors here.
+        .catch(function(error) {
           console.log(error.code);
           console.log(error.message);
-          // ...
-        });
-      var ref = firebase.database().ref();
+        });*/
 
-      ref.on(
-        "value",
-        function(snapshot) {
-          console.log(snapshot.val());
+      let links = [
+        {
+          text: "tarihsel merkez",
+          link: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%3Fid%3DOIP.rtOVS7gQbo-2fD87sh17VgHaLJ%26pid%3DApi&f=1",
         },
-        function(error) {
-          console.log("Error: " + error.code);
-        }
-      );
-
-
-    var playersRef = firebase.database().ref("players/");
-
-playersRef.set ({
-   
-	
-   Amanda: {
-      number: 2,
-      age: 20
-   }
-});
-
+        {
+          text: "brooklyn koprusu",
+          link: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.ytimg.com%2Fvi%2FGH6LOHLngrs%2Fmaxresdefault.jpg&f=1&nofb=1",
+        },
+        {
+          text: "Sidney Opera House",
+          link: "https://g.hizliresim.com/sidney-opera-evi",
+        },
+        {
+          text: "tarihsel merkezg",
+          link: "https://g.hizliresim.com/tarihsel-merkez",
+        },
+        {
+          text: "brooklyn koprusudsfg",
+          link: "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2F2.bp.blogspot.com%2F-EpHh0A3jud4%2FU0Sgt_IY5FI%2FAAAAAAAAJHM%2F0Unk-uVDew0%2Fs1600%2FDik%2BDik.jpg&f=1&nofb=1",
+        },
+        {
+          text: "Sidney Opera Housesgj",
+          link: "https://g.hizliresim.com/sidney-opera-evi",
+        },
+        {
+          text: "Sidney Opersaa Housesgj",
+          link: "https://g.hizliresim.com/sidney-opera-evi",
+        },
+        {
+          text: "texts",
+          link: "https://g.hizliresim.com/tarihsel-merkez"
+        },
+      ];
 
       firebase
         .database()
-        .ref("users/" + "userId")
+        .ref("users/")
         .set({
-          username: "name",
-          email: "email",
-          profile_picture: "imageUrl",
+          links: JSON.stringify(links),
         });
     },
   },
@@ -110,13 +121,8 @@ playersRef.set ({
 </script>
 
 <style>
-#app {
-  /*  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 40px;*/
+* {
+  box-sizing: border-box;
 }
 .header {
   display: flex;
