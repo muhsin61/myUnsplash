@@ -2,23 +2,35 @@
   <div class="hello">
     <div class="row">
       <div class="column">
-        <div v-for="item in $store.state.newDatas[0]" :key="item.text" class="imgs">
+        <div
+          v-for="item in $store.state.newDatas[0]"
+          :key="item.text"
+          class="imgs"
+        >
           <img :src="item.link" :alt="item.text" />
-          <button @click="deletes(item.text)">Delete</button>
+          <button @click="deletes(item)">Delete</button>
           <p class="p">{{ item.text }}</p>
         </div>
       </div>
       <div class="column">
-        <div v-for="item in $store.state.newDatas[1]" :key="item.text" class="imgs">
+        <div
+          v-for="item in $store.state.newDatas[1]"
+          :key="item.text"
+          class="imgs"
+        >
           <img :src="item.link" :alt="item.text" />
-          <button @click="deletes(item.text)">Delete</button>
+          <button @click="deletes(item)">Delete</button>
           <p class="p">{{ item.text }}</p>
         </div>
       </div>
       <div class="column">
-        <div v-for="item in $store.state.newDatas[2]" :key="item.text" class="imgs">
+        <div
+          v-for="item in $store.state.newDatas[2]"
+          :key="item.text"
+          class="imgs"
+        >
           <img :src="item.link" :alt="item.text" />
-          <button @click="deletes(item.text)">Delete</button>
+          <button @click="deletes(item)">Delete</button>
           <p class="p">{{ item.text }}</p>
         </div>
       </div>
@@ -30,8 +42,9 @@
 export default {
   name: "Photos",
   methods: {
-    deletes: () => {
-      alert("hover me");
+    deletes(item) {
+      console.log(item);
+      this.$emit('delete:item', item)
     },
   },
 };
@@ -55,7 +68,7 @@ export default {
   width: 100%;
   border-radius: 24px;
 }
-.imgs{
+.imgs {
   position: relative;
 }
 button {
@@ -81,7 +94,7 @@ button {
   font-size: 18px;
   opacity: 0;
 }
-button:hover{
+button:hover {
   opacity: 1;
   border: 1px solid #cc4b4b;
 }
@@ -98,7 +111,7 @@ p {
   z-index: 3;
   opacity: 0;
 }
-img:hover{
+img:hover {
   filter: grayscale(100%);
 }
 img:hover ~ button {

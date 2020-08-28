@@ -6,24 +6,34 @@
         <span class="material-icons">search</span>
         <input type="text" placeholder="Search by name" />
       </div>
-      <button @click="$store.state.isShow = 'block'" class="addButton">Add a photo</button>
+      <button @click="$store.state.isShow = 'block'" class="addButton">
+        Add a photo
+      </button>
     </div>
     <div class="add" :style="{ display: $store.state.isShow }" @click="add">
       <div class="addContent">
         <div>
           <h1>Add a new photo</h1>
           <p>Label</p>
-          <input type="text" placeholder="Suspendisse elit massa" />
+          <input
+            v-model="addText"
+            type="text"
+            placeholder="Suspendisse elit massa"
+          />
           <p>Photo URL</p>
-          <input type="text" placeholder="https://images.unsplash.com/photo-1584395630827-860eee694d7b?ixlib=r..." />
+          <input
+            v-model="addLink"
+            type="text"
+            placeholder="https://images.unsplash.com/photo-1584395630827-860eee694d7b?ixlib=r..."
+          />
           <div class="buttons">
-            <button @click="$store.state.isShow = 'none' ">Cancel</button>
-            <button>Submit</button>
+            <button @click="$store.state.isShow = 'none'">Cancel</button>
+            <button @click="fire">Submit</button>
           </div>
         </div>
       </div>
     </div>
-    <Photos msg="Welcome to Your Vue.js App" />
+    <Photos @delete:item="deletes" msg="Welcome to Your Vue.js App" />
   </div>
 </template>
 
@@ -49,14 +59,17 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 
-//devChallenges.io şifre
 export default {
   name: "App",
   components: {
     Photos,
   },
-  //devchallenges.io
-  //muhsin.io@horsemail.com
+  data() {
+    return {
+      addText: "",
+      addLink: "",
+    };
+  },
   created() {
     firebase
       .database()
@@ -74,38 +87,36 @@ export default {
   },
   methods: {
     add(e) {
-      if(e.target.className == "add"){
+      if (e.target.className == "add") {
         this.$store.state.isShow = "none";
       }
     },
-    fire: () => {
-      //alert(this.$store.state.deneme);
-      /*firebase
-        .auth()
-        .signInWithEmailAndPassword(
-          "muhsin.io@horsemail.com",
-          "devChallenges.io"
-        )
-        .catch(function(error) {
-          console.log(error.code);
-          console.log(error.message);
-        });
-
-      let links = [
-        {
-          text: "tarihsel merkez",
-          link:
-            "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%3Fid%3DOIP.rtOVS7gQbo-2fD87sh17VgHaLJ%26pid%3DApi&f=1",
-        },
-      ];
+    fire() {
+      let oldData = this.$store.state.datas;
+      oldData.unshift({ text: this.addText, link: this.addLink });
+      console.log(oldData);
+      this.$store.state.datas = oldData;
 
       firebase
         .database()
         .ref("users/")
         .set({
-          links: JSON.stringify(links),
-        });*/
+          links: JSON.stringify(oldData),
+        });
     },
+    deletes(item){
+      let newData = this.$store.state.datas
+      newData.splice(newData.indexOf(item), 1)
+      this.$store.state.datas = newData
+      console.log(newData)
+      this.$store.commit("dataSplice")
+      firebase
+        .database()
+        .ref("users/")
+        .set({
+          links: JSON.stringify(newData),
+        });
+    }
   },
 };
 </script>
@@ -189,7 +200,7 @@ export default {
   border-radius: 12px;
   margin: 5% auto 15% auto;
 }
-.addContent h1{
+.addContent h1 {
   font-family: Noto Sans;
   font-style: normal;
   font-weight: 500;
@@ -199,43 +210,44 @@ export default {
   margin: 0;
   padding: 0;
 }
-.addContent p{
+.addContent p {
   font-family: Noto Sans;
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
   line-height: 19px;
-  color: #4F4F4F;
+  color: #4f4f4f;
   padding: 0;
   margin: 0;
 }
-.addContent input[type="text"]{
-  border: 1px solid #4F4F4F;
+.addContent input[type="text"] {
+  border: 1px solid #4f4f4f;
   box-sizing: border-box;
   filter: drop-shadow(0px 1px 6px rgba(0, 0, 0, 0.1));
   border-radius: 12px;
   width: 100%;
   height: 55px;
 }
-.buttons{
+.buttons {
   float: right;
 }
-.buttons button{
+.buttons button {
   background: none;
   border: none;
   cursor: pointer;
 }
-.buttons button:nth-child(1){
+.buttons button:nth-child(1) {
   font-family: Noto Sans;
   font-style: normal;
   font-weight: 500;
   font-size: 18px;
   line-height: 25px;
-  color: #BDBDBD;
+  color: #bdbdbd;
 }
-.buttons button:nth-child(2){
-  padding: 20px;
-  background: #3DB46D;
+.buttons button:nth-child(2) {
+  margin: 10px;
+  padding: 15px;
+  background: #3db46d;
   box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.1);
   border-radius: 24px;
   font-family: Noto Sans;
@@ -243,9 +255,9 @@ export default {
   font-weight: bold;
   font-size: 14px;
   line-height: 19px;
-  color: #FFFFFF;
+  color: #ffffff;
 }
-.buttons button:nth-child(2):hover{
+.buttons button:nth-child(2):hover {
   background: #36a763;
 }
 </style>
