@@ -4,7 +4,9 @@
       <img alt="unsplah logo" src="./my_unsplash_logo.svg" />
       <div class="forms">
         <span class="material-icons">search</span>
-        <input type="text" placeholder="Search by name" />
+        <form @submit="findText">
+        <input type="text" v-model="$store.state.searchText" placeholder="Search by name" />
+        </form>
       </div>
       <button @click="$store.state.isShow = 'block'" class="addButton">
         Add a photo
@@ -42,8 +44,6 @@ import Photos from "./components/Photos.vue";
 import * as firebase from "firebase/app";
 import "firebase/analytics";
 import "firebase/database";
-// Add the Firebase products that you want to use
-//import "firebase/auth";
 
 var firebaseConfig = {
   apiKey: "AIzaSyBJqRMlOYjnWSkgm-1JabStYp5txI01xr0",
@@ -92,30 +92,47 @@ export default {
       }
     },
     fire() {
-      let oldData = this.$store.state.datas;
-      oldData.unshift({ text: this.addText, link: this.addLink });
-      console.log(oldData);
-      this.$store.state.datas = oldData;
-
-      firebase
-        .database()
-        .ref("users/")
-        .set({
-          links: JSON.stringify(oldData),
-        });
+      if(this.addText && this.addLink){
+        let oldData = this.$store.state.datas;
+        oldData.unshift({ text: this.addText, link: this.addLink });
+        console.log(oldData);
+        this.$store.state.datas = oldData;
+  
+        firebase
+          .database()
+          .ref("users/")
+          .set({
+            links: JSON.stringify(oldData),
+          });
+  
+          this.addLink = "";
+          this.addText = "";
+          this.$store.state.isShow = "none"
+      }else{
+        alert("Please write something..")
+      }
     },
-    deletes(item){
-      let newData = this.$store.state.datas
-      newData.splice(newData.indexOf(item), 1)
-      this.$store.state.datas = newData
-      console.log(newData)
-      this.$store.commit("dataSplice")
+    deletes(item) {
+      let newData = this.$store.state.datas;
+      newData.splice(newData.indexOf(item), 1);
+      this.$store.state.datas = newData;
+      console.log(newData);
+      this.$store.commit("dataSplice");
       firebase
         .database()
         .ref("users/")
         .set({
           links: JSON.stringify(newData),
         });
+    },
+    findText(e){
+      if(this.$store.state.searchText){
+        this.$store.commit("findText")
+      }else{
+        alert("Please write something...")
+        this.$store.commit("dataSplice")
+      }
+      e.preventDefault();
     }
   },
 };
@@ -193,7 +210,7 @@ export default {
 }
 .addContent {
   width: 40%;
-  height: 300px;
+  height: 330px;
   padding: 40px;
   position: relative;
   background: #ffffff;
@@ -218,7 +235,7 @@ export default {
   line-height: 19px;
   color: #4f4f4f;
   padding: 0;
-  margin: 0;
+  margin: 5px;
 }
 .addContent input[type="text"] {
   border: 1px solid #4f4f4f;
@@ -227,6 +244,7 @@ export default {
   border-radius: 12px;
   width: 100%;
   height: 55px;
+  font-size: 20px;
 }
 .buttons {
   float: right;

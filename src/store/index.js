@@ -10,6 +10,7 @@ export default new Vuex.Store({
     newDatas: [[], [], []],
     number: 0,
     isShow: "none",
+    searchText: "",
   },
   mutations: {
     add: (state) => {
@@ -30,6 +31,18 @@ export default new Vuex.Store({
     },
     displayChange: (state) => {
       alert(state.isShow);
+    },
+    findText: (state) => {
+      state.newDatas = [[], [], []];
+      state.number = 0;
+      state.datas.forEach((item) => {
+        if( ((item.text).toLowerCase()).indexOf((state.searchText).toLowerCase()) != -1 ){
+          state.newDatas[state.number].push(item);
+          state.number <= 1
+            ? (state.number = state.number + 1)
+            : (state.number = 0);
+        }
+      });
     },
   },
   actions: {},

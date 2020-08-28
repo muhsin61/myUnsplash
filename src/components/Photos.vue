@@ -73,26 +73,23 @@ export default {
 }
 button {
   border: 1px solid #eb5757;
-  box-sizing: border-box;
   border-radius: 12px;
   background: none;
-  width: 63px;
-  height: 23px;
   font-family: Montserrat;
   font-style: normal;
-  font-weight: 600;
-  font-size: 12px;
+  font-weight: 400;
+  font-size: 10px;
   line-height: 15px;
   text-transform: lowercase;
   color: #eb5757;
   z-index: 3;
   position: absolute;
   cursor: pointer;
-  position: absolute;
   top: 20px;
   right: 16px;
   font-size: 18px;
   opacity: 0;
+  padding: 7px;
 }
 button:hover {
   opacity: 1;
