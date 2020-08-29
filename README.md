@@ -1,7 +1,7 @@
 Vue
 Vuex
 Firebase
-#Demo: https://vuemyunsplash.onrender.com
+# Demo: https://vuemyunsplash.onrender.com
 # unsplash
 
 ## Project setup
