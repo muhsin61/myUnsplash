@@ -278,4 +278,7 @@ export default {
 .buttons button:nth-child(2):hover {
   background: #36a763;
 }
+input:focus{
+  outline: none;
+}
 </style>
